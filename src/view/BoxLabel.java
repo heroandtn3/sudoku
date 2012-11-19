@@ -8,7 +8,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 /**
  * @author heroandtn3
@@ -24,15 +24,17 @@ public class BoxLabel extends JLabel implements MouseListener {
 	private final Color HOVER_COLOR = Color.BLUE;
 	private final Color CHOICE_COLOR = Color.CYAN;
 	private int value; // gia tri cua box
-	private boolean selected; // kiem tra xem o co duoc chon hay khong
+	private int row, col; // hang va cot trong ma tran
+	private boolean selected = false; // kiem tra xem o co duoc chon hay khong
 
 	/**
 	 * Ham khoi tao BoxLabel
 	 * @param value: gia tri khoi tao
 	 */
-	public BoxLabel() {
+	public BoxLabel(int row, int col) {
 		// TODO Auto-generated constructor stub
-		initVar();
+		this.row = row;
+		this.col = col;
 		setOpaque(true);
 		setBackground(ORI_COLOR);
 		setPreferredSize(new Dimension(30, 30));
@@ -40,33 +42,27 @@ public class BoxLabel extends JLabel implements MouseListener {
 	}
 	
 	/**
-	 * Khoi tao gia tri cac bien
+	 * Chon box
 	 */
-	private void initVar() {
-		selected = false;
+	public void select() {
+		setBackground(CHOICE_COLOR);
+		selected = true;
+		
 	}
 	
 	/**
-	 * Chon/bo chon box
-	 * @param select: true neu chon, false neu bo chon
+	 * Bo chon box
 	 */
-	public void select(boolean select) {
-		if (select) {
-			setBackground(CHOICE_COLOR);
-			selected = true;
-		}
-			
-		else {
-			setBackground(ORI_COLOR);
-			selected = false;
-		} 
-			
+	public void deselect() {
+		setBackground(ORI_COLOR);
+		selected = false;
 	}
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		select(true);
+		System.out.println("Mouse");
 	}
 
 	@Override
@@ -84,19 +80,46 @@ public class BoxLabel extends JLabel implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (!selected)
-			setBackground(HOVER_COLOR);
-		
+		if (!selected) {
+				setBackground(HOVER_COLOR);
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (!selected)
-			setBackground(ORI_COLOR);
-		
+		if (!selected) {
+				setBackground(ORI_COLOR);
+		}
 	}
-	
-	
+
+	/**
+	 * @return the row
+	 */
+	public int getRow() {
+		return row;
+	}
+
+	/**
+	 * @param row the row to set
+	 */
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	/**
+	 * @return the col
+	 */
+	public int getCol() {
+		return col;
+	}
+
+	/**
+	 * @param col the col to set
+	 */
+	public void setCol(int col) {
+		this.col = col;
+	}
+
 
 }
