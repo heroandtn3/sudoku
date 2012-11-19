@@ -18,7 +18,8 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setTitle("Sudoku");
-		setSize(300, 300);
+		getContentPane().add(new BoxPanel());
+		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
