@@ -3,12 +3,14 @@
  */
 package view;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import model.Constant;
@@ -37,6 +39,7 @@ public class BoxPanel extends JPanel implements KeyListener {
 		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, 
 				Constant.BOX_PADDING, Constant.BOX_PADDING));
 		initGUI();
+		setBackground(Color.GRAY);
 		addKeyListener(this);
 		setFocusable(true);
 	}
@@ -45,6 +48,17 @@ public class BoxPanel extends JPanel implements KeyListener {
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
 				boxs[i][j] = new BoxLabel(i, j);
+				// ve cac duong ngang
+				if (i == 3 || i == 6)
+					boxs[i][j].setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+				// ve cac duong doc
+				if (j == 3 || j == 6) {
+					boxs[i][j].setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
+					if (i == 3 || i == 6) {
+						// fix lai cac diem giao nhau
+						boxs[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.GRAY));
+					}
+				}
 				boxs[i][j].addMouseListener(new MouseListener() {
 
 					@Override
@@ -101,8 +115,12 @@ public class BoxPanel extends JPanel implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (rowSelected != -1)
-		boxs[rowSelected][colSelected].setText("" + e.getKeyChar());
+		if (rowSelected != -1) {
+			Character c = e.getKeyChar();
+			if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
+				boxs[rowSelected][colSelected].setValue(Integer.parseInt(c.toString()));
+			}
+		}
 	}
 
 	@Override

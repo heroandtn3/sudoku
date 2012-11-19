@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(new BoxPanel());
 		pack();
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 }

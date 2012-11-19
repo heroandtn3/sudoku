@@ -5,10 +5,14 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+import model.Constant;
 
 /**
  * @author heroandtn3
@@ -24,6 +28,7 @@ public class BoxLabel extends JLabel implements MouseListener {
 	private final Color HOVER_COLOR = Color.BLUE;
 	private final Color CHOICE_COLOR = Color.CYAN;
 	private int value; // gia tri cua box
+	private boolean fixedValue = false; // gia tri cua o co co dinh hay khong
 	private int row, col; // hang va cot trong ma tran
 	private boolean selected = false; // kiem tra xem o co duoc chon hay khong
 
@@ -37,7 +42,9 @@ public class BoxLabel extends JLabel implements MouseListener {
 		this.col = col;
 		setOpaque(true);
 		setBackground(ORI_COLOR);
-		setPreferredSize(new Dimension(30, 30));
+		setPreferredSize(new Dimension(Constant.BOX_SIZE, Constant.BOX_SIZE));
+		setHorizontalAlignment(SwingConstants.CENTER);
+		setFont(new java.awt.Font("Segoe UI", Font.BOLD, 22));
 		addMouseListener(this);
 	}
 	
@@ -57,12 +64,28 @@ public class BoxLabel extends JLabel implements MouseListener {
 		setBackground(ORI_COLOR);
 		selected = false;
 	}
+
+	/**
+	 * Set gia tri cho box
+	 * @param value: gia tri so, nam trong khoang tu 1 den 9
+	 */
+	public void setValue(int value) {
+		this.value = value;
+		this.setText("" + value);
+	}
+	
+	/**
+	 * @param fixedValue the fixedValue to set
+	 */
+	public void setFixedValue(int value) {
+		this.value = value;
+		this.fixedValue = true;
+	}
 	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Mouse");
 	}
 
 	@Override
@@ -119,6 +142,20 @@ public class BoxLabel extends JLabel implements MouseListener {
 	 */
 	public void setCol(int col) {
 		this.col = col;
+	}
+
+	/**
+	 * @return the fixedValue
+	 */
+	public boolean isFixedValue() {
+		return fixedValue;
+	}
+
+	/**
+	 * @return the value
+	 */
+	public int getValue() {
+		return value;
 	}
 
 
