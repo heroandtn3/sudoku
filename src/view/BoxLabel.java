@@ -70,8 +70,15 @@ public class BoxLabel extends JLabel implements MouseListener {
 	 * @param value: gia tri so, nam trong khoang tu 1 den 9
 	 */
 	public void setValue(int value) {
-		this.value = value;
-		this.setText("" + value);
+		if (fixedValue == false) {
+			this.value = value;
+			if (value == -1) {
+				this.setText("");
+			} else {
+				this.setText("" + value);
+			}
+		}
+		
 	}
 	
 	/**
@@ -79,7 +86,9 @@ public class BoxLabel extends JLabel implements MouseListener {
 	 */
 	public void setFixedValue(int value) {
 		this.value = value;
+		this.setText("" + value);
 		this.fixedValue = true;
+		this.setForeground(Color.RED);
 	}
 	
 
