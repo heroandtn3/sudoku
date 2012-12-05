@@ -30,6 +30,8 @@ public class BoxPanel extends JPanel implements KeyListener {
 	private BoxLabel[][] boxs = new BoxLabel[SDK_SIZE][SDK_SIZE];
 	private int rowSelected = -1; // hang va cot
 	private int colSelected = -1; // dang duoc chon
+	private boolean error = false;
+	private int savedErrorType = 0;
 	
 	// tao mang ma tran de test
 	private int[][] matrix = {
@@ -62,7 +64,8 @@ public class BoxPanel extends JPanel implements KeyListener {
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
 				BoxLabel box = new BoxLabel(i, j);
-				
+				boxs[i][j] = box;
+				add(box);
 				if (matrix[i][j] != 0) {
 					box.setFixedValue(matrix[i][j]);
 				}
@@ -78,10 +81,7 @@ public class BoxPanel extends JPanel implements KeyListener {
 						box.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.GRAY));
 					}
 				}
-				
-				box.addMouseListener(boxClickEvent);
-				add(box);
-				boxs[i][j] = box;
+				box.addMouseListener(boxClickEvent);	
 			}
 		}
 	}
@@ -92,18 +92,22 @@ public class BoxPanel extends JPanel implements KeyListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			// deselect box da chon
-			if (rowSelected != -1) { 
-				// kiem tra xem da co o nao chon chua
-				// neu co thi deselect no de chon cai khac
-				boxs[rowSelected][colSelected].deselect();
+			if (error == true) {
+				System.out.println("Ban phai sua loi da roi moi duoc dien tiep");
+			} else {
+				// deselect box da chon
+				if (rowSelected != -1) { 
+					// kiem tra xem da co o nao chon chua
+					// neu co thi deselect no de chon cai khac
+					boxs[rowSelected][colSelected].deselect();
+				}
+				
+				BoxLabel source = (BoxLabel) e.getSource();
+				source.select(); // chon box moi
+				// luu lai vet
+				rowSelected = source.getRow();
+				colSelected = source.getCol();
 			}
-			
-			BoxLabel source = (BoxLabel) e.getSource();
-			source.select(); // chon box moi
-			// luu lai vet
-			rowSelected = source.getRow();
-			colSelected = source.getCol();
 		}
 
 		@Override
@@ -145,12 +149,28 @@ public class BoxPanel extends JPanel implements KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_DELETE ||
 				e.getKeyCode() == KeyEvent.VK_SPACE) {
 				boxs[rowSelected][colSelected].setValue(-1);
+				if (error) {
+					hightLightError(rowSelected, colSelected, savedErrorType, false);
+					error = false;
+				}
 			} else {
 				Character c = e.getKeyChar();
 				if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
+					if (error) {
+						hightLightError(rowSelected, colSelected, savedErrorType, false);
+						error = false;
+					}
 					boxs[rowSelected][colSelected].setValue(Integer.parseInt(c.toString()));
 					Checker checker = new Checker();
-					checker.getErrorType(boxs, rowSelected, colSelected);
+					int errorType = checker.getErrorType(boxs, rowSelected, colSelected);
+					if (errorType != 0) {
+						hightLightError(rowSelected, colSelected, errorType, true);
+						error = true;
+						savedErrorType = errorType;
+					} else {
+						error = false;
+					}
+					
 				}
 			}
 		}
@@ -160,6 +180,35 @@ public class BoxPanel extends JPanel implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void hightLightError(int row, int col, int type, boolean status) {
+		final int nrow = boxs.length;
+		final int ncol = boxs[0].length;
+		if ((type & 1) == 1) {
+			// row error
+			for (int i = 0; i < ncol; i++) {
+				boxs[row][i].setError(status);
+			}
+		}
+		
+		if ((type & 2) == 2) {
+			// col error
+			for (int i = 0; i < nrow; i++) {
+				boxs[i][col].setError(status);
+			}
+		}
+		
+		if ((type & 4) == 4) {
+			// 3x3 error
+			int startRow = row - row % 3;
+			int startCol = col - col % 3;
+			for (int i = startRow; i < startRow + 3; i++) {
+				for (int j = startCol; j < startCol + 3; j++) {
+					boxs[i][j].setError(status);
+				}
+			}
+		}
 	}
 
 }

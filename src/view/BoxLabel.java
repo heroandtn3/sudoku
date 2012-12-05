@@ -27,8 +27,10 @@ public class BoxLabel extends JLabel implements MouseListener {
 	private final Color ORI_COLOR = Color.WHITE;
 	private final Color HOVER_COLOR = Color.BLUE;
 	private final Color CHOICE_COLOR = Color.CYAN;
+	private final Color ERR_COLOR = Color.PINK;
 	private int value; // gia tri cua box
 	private boolean fixedValue = false; // gia tri cua o co co dinh hay khong
+	private boolean err = false;
 	private int row, col; // hang va cot trong ma tran
 	private boolean selected = false; // kiem tra xem o co duoc chon hay khong
 
@@ -42,18 +44,44 @@ public class BoxLabel extends JLabel implements MouseListener {
 		this.col = col;
 		value = -1; // mac dinh bang -1
 		setOpaque(true);
-		setBackground(ORI_COLOR);
+		this.setOriColor();
 		setPreferredSize(new Dimension(Constant.BOX_SIZE, Constant.BOX_SIZE));
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setFont(new java.awt.Font("Segoe UI", Font.BOLD, 22));
 		addMouseListener(this);
 	}
 	
+	private void setOriColor() {
+		if (!err && !selected) {
+			setBackground(ORI_COLOR);
+			this.validate();
+		}
+	}
+	
+	private void setChoiceColor() {
+		setBackground(CHOICE_COLOR);
+		this.validate();
+	}
+	
+	private void setHoverColor() {
+		if (!selected) {
+			setBackground(HOVER_COLOR);
+			this.validate();
+		}
+	}
+	
+	private void setErrColor() {
+		if (!selected) {
+			setBackground(ERR_COLOR);
+			this.validate();
+		}
+	}
+	
 	/**
 	 * Chon box
 	 */
 	public void select() {
-		setBackground(CHOICE_COLOR);
+		this.setChoiceColor();
 		selected = true;
 		
 	}
@@ -62,8 +90,12 @@ public class BoxLabel extends JLabel implements MouseListener {
 	 * Bo chon box
 	 */
 	public void deselect() {
-		setBackground(ORI_COLOR);
 		selected = false;
+		if (err) {
+			this.setErrColor();
+		} else {
+			this.setOriColor();
+		}
 	}
 
 	/**
@@ -92,6 +124,21 @@ public class BoxLabel extends JLabel implements MouseListener {
 		this.setForeground(Color.RED);
 	}
 	
+	/**
+	 * 
+	 * @param error
+	 */
+	public void setError(boolean error) {
+		if (error == true) {
+			this.setErrColor();
+			setErr(true);
+		}
+		else {
+			setErr(false);
+			this.setOriColor();
+		}	
+	}
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -113,16 +160,18 @@ public class BoxLabel extends JLabel implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (!selected) {
-				setBackground(HOVER_COLOR);
-		}
+		this.setHoverColor();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (!selected) {
-				setBackground(ORI_COLOR);
+			if (err) {
+				this.setErrColor();
+			} else {
+				this.setOriColor();
+			}
 		}
 	}
 
@@ -166,6 +215,14 @@ public class BoxLabel extends JLabel implements MouseListener {
 	 */
 	public int getValue() {
 		return value;
+	}
+
+	public boolean isErr() {
+		return err;
+	}
+
+	public void setErr(boolean err) {
+		this.err = err;
 	}
 
 
