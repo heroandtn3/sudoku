@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import model.Constant;
+import control.Checker;
 
 /**
  * @author heroandtn3
@@ -26,7 +27,6 @@ public class BoxPanel extends JPanel implements KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final int SDK_SIZE = Constant.SIZE;
-	private final int CELL_SIZE = Constant.BOX_PADDING + Constant.BOX_SIZE;
 	private BoxLabel[][] boxs = new BoxLabel[SDK_SIZE][SDK_SIZE];
 	private int rowSelected = -1; // hang va cot
 	private int colSelected = -1; // dang duoc chon
@@ -55,6 +55,7 @@ public class BoxPanel extends JPanel implements KeyListener {
 		setBackground(Color.GRAY);
 		addKeyListener(this);
 		setFocusable(true);
+		validate();
 	}
 
 	private void initGUI() {
@@ -78,53 +79,58 @@ public class BoxPanel extends JPanel implements KeyListener {
 					}
 				}
 				
-				box.addMouseListener(new MouseListener() {
-
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						// TODO Auto-generated method stub
-						// deselect box da chon
-						if (rowSelected != -1) { // kiem tra xem da chon chua
-							boxs[rowSelected][colSelected].deselect();
-						}
-						
-						BoxLabel source = (BoxLabel) e.getSource();
-						source.select(); // chon box moi
-						// luu lai vet
-						rowSelected = source.getRow();
-						colSelected = source.getCol();
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-				});
+				box.addMouseListener(boxClickEvent);
 				add(box);
 				boxs[i][j] = box;
 			}
 		}
 	}
+	
+	
+	private MouseListener boxClickEvent = new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			// deselect box da chon
+			if (rowSelected != -1) { 
+				// kiem tra xem da co o nao chon chua
+				// neu co thi deselect no de chon cai khac
+				boxs[rowSelected][colSelected].deselect();
+			}
+			
+			BoxLabel source = (BoxLabel) e.getSource();
+			source.select(); // chon box moi
+			// luu lai vet
+			rowSelected = source.getRow();
+			colSelected = source.getCol();
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	};
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -135,7 +141,7 @@ public class BoxPanel extends JPanel implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (rowSelected != -1) {
+		if (rowSelected != -1) { // neu da co o chon
 			if (e.getKeyCode() == KeyEvent.VK_DELETE ||
 				e.getKeyCode() == KeyEvent.VK_SPACE) {
 				boxs[rowSelected][colSelected].setValue(-1);
@@ -143,6 +149,8 @@ public class BoxPanel extends JPanel implements KeyListener {
 				Character c = e.getKeyChar();
 				if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
 					boxs[rowSelected][colSelected].setValue(Integer.parseInt(c.toString()));
+					Checker checker = new Checker();
+					checker.getErrorType(boxs, rowSelected, colSelected);
 				}
 			}
 		}

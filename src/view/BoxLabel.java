@@ -34,12 +34,13 @@ public class BoxLabel extends JLabel implements MouseListener {
 
 	/**
 	 * Ham khoi tao BoxLabel
-	 * @param value: gia tri khoi tao
+	 * 
 	 */
 	public BoxLabel(int row, int col) {
 		// TODO Auto-generated constructor stub
 		this.row = row;
 		this.col = col;
+		value = -1; // mac dinh bang -1
 		setOpaque(true);
 		setBackground(ORI_COLOR);
 		setPreferredSize(new Dimension(Constant.BOX_SIZE, Constant.BOX_SIZE));
