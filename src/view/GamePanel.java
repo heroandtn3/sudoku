@@ -103,10 +103,7 @@ public class GamePanel extends JPanel implements KeyListener {
 				}
 				
 				BoxLabel source = (BoxLabel) e.getSource();
-				source.select(); // chon box moi
-				// luu lai vet
-				rowSelected = source.getRow();
-				colSelected = source.getCol();
+				selectBox(source);
 			}
 		}
 
@@ -145,35 +142,89 @@ public class GamePanel extends JPanel implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (rowSelected != -1) { // neu da co o chon
-			if (e.getKeyCode() == KeyEvent.VK_DELETE ||
-				e.getKeyCode() == KeyEvent.VK_SPACE) {
-				boxs[rowSelected][colSelected].setValue(-1);
-				if (error) {
-					hightLightError(rowSelected, colSelected, savedErrorType, false);
-					error = false;
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				if (rowSelected != -1) {
+					// da co box duoc chon truoc do
+					int tmp = rowSelected - 1;
+					if (tmp < 0) tmp = 8;
+					selectBox(boxs[tmp][colSelected]);
+				} else {
+					// chua co box nao duoc chon
+					// thi chon box duoi cung ben trai
+					selectBox(boxs[8][0]);
 				}
-			} else {
-				Character c = e.getKeyChar();
-				if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
-					if (error) {
-						hightLightError(rowSelected, colSelected, savedErrorType, false);
-						error = false;
-					}
-					boxs[rowSelected][colSelected].setValue(Integer.parseInt(c.toString()));
-					Checker checker = new Checker();
-					int errorType = checker.getErrorType(boxs, rowSelected, colSelected);
-					if (errorType != 0) {
-						hightLightError(rowSelected, colSelected, errorType, true);
-						error = true;
-						savedErrorType = errorType;
+				break;
+			case KeyEvent.VK_RIGHT:
+				if (rowSelected != -1) {
+					// da co box duoc chon truoc do
+					int tmp = colSelected + 1;
+					if (tmp > 8) tmp = 0;
+					selectBox(boxs[rowSelected][tmp]);
+				} else {
+					// chua co box nao duoc chon
+					// thi chon box tren cung ben trai
+					selectBox(boxs[0][0]);
+				}
+				break;
+			case KeyEvent.VK_DOWN:
+				if (rowSelected != -1) {
+					// da co box duoc chon truoc do
+					int tmp = rowSelected + 1;
+					if (tmp > 8) tmp = 0;
+					selectBox(boxs[tmp][colSelected]);
+				} else {
+					// chua co box nao duoc chon
+					// thi chon box tren cung ben trai
+					selectBox(boxs[0][0]);
+				}
+				break;
+			case KeyEvent.VK_LEFT:
+				if (rowSelected != -1) {
+					// da co box duoc chon truoc do
+					int tmp = colSelected - 1;
+					if (tmp < 0) tmp = 8;
+					selectBox(boxs[rowSelected][tmp]);
+				} else {
+					// chua co box nao duoc chon
+					// thi chon box duoi cung ben phai
+					selectBox(boxs[8][8]);
+				}
+				break;
+			default:
+			{
+				if (rowSelected != -1) { // neu da co o chon
+					if (e.getKeyCode() == KeyEvent.VK_DELETE ||
+						e.getKeyCode() == KeyEvent.VK_SPACE) {
+						boxs[rowSelected][colSelected].setValue(-1);
+						if (error) {
+							hightLightError(rowSelected, colSelected, savedErrorType, false);
+							error = false;
+						}
 					} else {
-						error = false;
+						Character c = e.getKeyChar();
+						if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
+							if (error) {
+								hightLightError(rowSelected, colSelected, savedErrorType, false);
+								error = false;
+							}
+							boxs[rowSelected][colSelected].setValue(Integer.parseInt(c.toString()));
+							Checker checker = new Checker();
+							int errorType = checker.getErrorType(boxs, rowSelected, colSelected);
+							if (errorType != 0) {
+								hightLightError(rowSelected, colSelected, errorType, true);
+								error = true;
+								savedErrorType = errorType;
+							} else {
+								error = false;
+							}
+							
+						}
 					}
-					
 				}
 			}
 		}
+		
 	}
 
 	@Override
@@ -182,6 +233,31 @@ public class GamePanel extends JPanel implements KeyListener {
 		
 	}
 	
+	/**
+	 * 
+	 * @param box
+	 */
+	private void selectBox(BoxLabel box) {
+		// deselect box da chon
+		if (rowSelected != -1) { 
+			// kiem tra xem da co o nao chon chua
+			// neu co thi deselect no de chon cai khac
+			boxs[rowSelected][colSelected].deselect();
+		}
+		
+		box.select(); // chon box moi
+		// luu lai vet
+		rowSelected = box.getRow();
+		colSelected = box.getCol();
+	}
+	
+	/**
+	 * Hilight error boxs
+	 * @param row
+	 * @param col
+	 * @param type
+	 * @param status
+	 */
 	private void hightLightError(int row, int col, int type, boolean status) {
 		final int nrow = boxs.length;
 		final int ncol = boxs[0].length;
