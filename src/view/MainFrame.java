@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setTitle("Sudoku");
-		getContentPane().add(new BoxPanel());
+		getContentPane().add(new GamePanel());
 		pack();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

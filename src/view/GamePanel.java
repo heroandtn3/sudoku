@@ -20,7 +20,7 @@ import control.Checker;
  * @author heroandtn3
  * @date Nov 19, 2012
  */
-public class BoxPanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener {
 
 	/**
 	 * 
@@ -49,7 +49,7 @@ public class BoxPanel extends JPanel implements KeyListener {
 	/**
 	 * 
 	 */
-	public BoxPanel() {
+	public GamePanel() {
 		// TODO Auto-generated constructor stub
 		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, 
 				Constant.BOX_PADDING, Constant.BOX_PADDING));
