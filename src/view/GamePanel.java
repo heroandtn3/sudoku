@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import model.Constant;
+import model.Grid;
 import control.Checker;
 
 /**
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	private int savedErrorType = 0;
 	
 	// tao mang ma tran de test
-	private int[][] matrix = {
+	private int[][] matrixTest = {
 			{3, 0, 0, 0, 0, 0, 5, 0, 0},
 			{0, 0, 0, 8, 0, 6, 0, 0, 0},
 			{0, 2, 5, 0, 0, 0, 6, 0, 1},
@@ -45,6 +46,7 @@ public class GamePanel extends JPanel implements KeyListener {
 			{0, 0, 0, 3, 0, 4, 0, 0, 0},
 			{0, 0, 1, 0, 0, 0, 0, 0, 9}
 	};
+	private final Grid grid = new Grid(matrixTest);
 
 	/**
 	 * 
@@ -54,6 +56,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, 
 				Constant.BOX_PADDING, Constant.BOX_PADDING));
 		initGUI();
+		drawBoxValue(grid);
 		setBackground(Color.GRAY);
 		addKeyListener(this);
 		setFocusable(true);
@@ -64,12 +67,6 @@ public class GamePanel extends JPanel implements KeyListener {
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
 				BoxLabel box = new BoxLabel(i, j);
-				boxs[i][j] = box;
-				add(box);
-				if (matrix[i][j] != 0) {
-					box.setFixedValue(matrix[i][j]);
-				}
-				
 				// ve cac duong ngang
 				if (i == 3 || i == 6)
 					box.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
@@ -81,7 +78,21 @@ public class GamePanel extends JPanel implements KeyListener {
 						box.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.GRAY));
 					}
 				}
-				box.addMouseListener(boxClickEvent);	
+				box.addMouseListener(boxClickEvent);
+				add(box);
+				boxs[i][j] = box;
+			}
+		}
+	}
+	
+	public void drawBoxValue(Grid grid) {
+		if (grid == null) return; // kiem tra tinh hop le cua grid
+		int[][] mt = grid.toMatrix();
+		for (int i = 0; i < SDK_SIZE; i++) {
+			for (int j = 0; j < SDK_SIZE; j++) {
+				if (mt[i][j] != 0) {
+					boxs[i][j].setFixedValue(mt[i][j]);
+				}
 			}
 		}
 	}
@@ -286,5 +297,10 @@ public class GamePanel extends JPanel implements KeyListener {
 			}
 		}
 	}
+
+	public Grid getGrid() {
+		return grid;
+	}
+
 
 }

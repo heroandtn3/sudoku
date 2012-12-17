@@ -3,6 +3,9 @@
  */
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+
 import javax.swing.JFrame;
 
 /**
@@ -11,6 +14,8 @@ import javax.swing.JFrame;
  */
 public class MainFrame extends JFrame {
 
+	GamePanel gamePanel;
+	MenuPanel menuPanel;
 	/**
 	 * 
 	 */
@@ -18,7 +23,16 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setTitle("Sudoku");
-		getContentPane().add(new GamePanel());
+		Container cp = getContentPane();
+		cp.setLayout(new BorderLayout());
+		
+		gamePanel = new GamePanel();
+		cp.add(gamePanel, BorderLayout.CENTER);
+		
+		menuPanel = new MenuPanel(gamePanel);
+		cp.add(menuPanel, BorderLayout.SOUTH);
+		
+		
 		pack();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
