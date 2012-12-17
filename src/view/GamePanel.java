@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, 
 				Constant.BOX_PADDING, Constant.BOX_PADDING));
 		initGUI();
-		drawBoxValue(grid);
+		drawBoxValue(grid, true);
 		setBackground(Color.GRAY);
 		addKeyListener(this);
 		setFocusable(true);
@@ -85,13 +85,18 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 	}
 	
-	public void drawBoxValue(Grid grid) {
+	public void drawBoxValue(Grid grid, boolean fixed) {
 		if (grid == null) return; // kiem tra tinh hop le cua grid
 		int[][] mt = grid.toMatrix();
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
 				if (mt[i][j] != 0) {
-					boxs[i][j].setFixedValue(mt[i][j]);
+					if (fixed) {
+						boxs[i][j].setFixedValue(mt[i][j]);
+					}
+					else {
+						boxs[i][j].setValue(mt[i][j]);
+					}
 				}
 			}
 		}

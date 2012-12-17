@@ -64,7 +64,11 @@ public class MenuPanel extends JPanel {
 						public void actionPerformed(ActionEvent evt) {
 							// solve the sudoku grid
 							Grid grid = solver.solve(gamePanel.getGrid());
-							gamePanel.drawBoxValue(grid);
+							if (grid != null) {
+								gamePanel.drawBoxValue(grid, false);
+								gamePanel.validate();
+							}
+							gamePanel.requestFocusInWindow();
 						}
 					});
 				}
