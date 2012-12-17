@@ -19,7 +19,9 @@ public class Grid {
 	public Grid() {
 		// TODO Auto-generated constructor stub
 		symbols = new Symbol[SIZE][SIZE];
-		Arrays.fill(symbols, Symbol.EMPTY);
+		for (int i = 0; i < SIZE; i++) {
+			Arrays.fill(symbols[i], Symbol.EMPTY);
+		}
 	}
 	
 	/**
