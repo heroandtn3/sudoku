@@ -3,6 +3,8 @@
  */
 package model;
 
+import control.Generator;
+import control.GeneratorAlgorithm;
 import control.Solver;
 import control.SolverBacktracking;
 
@@ -17,25 +19,19 @@ public class Game {
 	private boolean error;
 	private int savedErrorType;
 	
-	// tao mang ma tran de test
-	private final int[][] matrixTest = {
-			{3, 0, 0, 0, 0, 0, 5, 0, 0},
-			{0, 0, 0, 8, 0, 6, 0, 0, 0},
-			{0, 2, 5, 0, 0, 0, 6, 0, 1},
-			{7, 0, 9, 0, 3, 8, 0, 0, 4},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{1, 0, 0, 9, 4, 0, 3, 0, 6},
-			{8, 0, 3, 0, 0, 0, 7, 6, 0},
-			{0, 0, 0, 3, 0, 4, 0, 0, 0},
-			{0, 0, 1, 0, 0, 0, 0, 0, 9}
-	};
-	private final Grid gridOri = new Grid(matrixTest);
+	private Grid gridOri;
 	private Grid gridSolving;
 	private Solver solver = new SolverBacktracking();
+	private Generator generator = new GeneratorAlgorithm();
 	/**
 	 * 
 	 */
 	public Game() {
+		initGame();
+	}
+	
+	public Game(int level) {
+		generate(level);
 		initGame();
 	}
 	
@@ -44,7 +40,13 @@ public class Game {
 		colSelected = -1; // dang duoc chon
 		error = false;
 		savedErrorType = 0;
-		gridSolving = new Grid(matrixTest);
+		if (gridOri != null) {
+			gridSolving = new Grid(gridOri.toMatrix());
+		}
+	}
+	
+	public void generate(int level) {
+		gridOri = generator.generate(level);
 	}
 	
 	/**
@@ -100,10 +102,6 @@ public class Game {
 
 	public void setGridSolving(Grid grid) {
 		this.gridSolving = grid;
-	}
-
-	public int[][] getMatrixTest() {
-		return matrixTest;
 	}
 
 	public Grid getGridOri() {

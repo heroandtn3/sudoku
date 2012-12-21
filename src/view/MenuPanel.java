@@ -65,6 +65,9 @@ public class MenuPanel extends JPanel {
 					butGen.setBounds(15, 12, 120, 30);
 					butGen.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
+							gamePanel.getGame().generate(1);
+							gamePanel.getGame().initGame();
+							gamePanel.resetView();
 							gamePanel.requestFocusInWindow();
 						}
 					});
