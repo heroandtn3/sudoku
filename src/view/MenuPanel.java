@@ -41,6 +41,8 @@ public class MenuPanel extends JPanel {
 	private GamePanel gamePanel;
 	private Solver solver = new SolverBacktracking();
 	private JButton butSolve;
+	private JButton butGen;
+	private JButton butReset;
 	/**
 	 * 
 	 */
@@ -55,19 +57,48 @@ public class MenuPanel extends JPanel {
 				this.setPreferredSize(new Dimension(gamePanel.getWidth(), 50));
 				this.setBackground(new Color(165,42,42));
 				this.setLayout(null);
+				
 				{
+					// button for generate new sudoku grid
+					butGen = new JButton();
+					this.add(butGen);
+					butGen.setText("Generate");
+					butGen.setBounds(15, 12, 120, 30);
+					butGen.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							gamePanel.requestFocusInWindow();
+						}
+					});
+				}
+				
+				{
+					// button for solver sudoku grid
 					butSolve = new JButton();
 					this.add(butSolve);
 					butSolve.setText("Solve");
-					butSolve.setBounds(128, 12, 100, 30);
+					butSolve.setBounds(150, 12, 80, 30);
 					butSolve.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
 							// solve the sudoku grid
-							Grid grid = solver.solve(gamePanel.getGrid());
+							Grid grid = solver.solve(gamePanel.getGame().getGrid());
 							if (grid != null) {
+								gamePanel.resetView();
 								gamePanel.drawBoxValue(grid, false);
 								gamePanel.validate();
 							}
+							gamePanel.requestFocusInWindow();
+						}
+					});
+				}
+				
+				{
+					butReset = new JButton();
+					this.add(butReset);
+					butReset.setText("Reset");
+					butReset.setBounds(245, 12, 80, 30);
+					butReset.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							gamePanel.resetView();
 							gamePanel.requestFocusInWindow();
 						}
 					});

@@ -29,10 +29,10 @@ public class BoxLabel extends JLabel implements MouseListener {
 	private final Color CHOICE_COLOR = Color.CYAN;
 	private final Color ERR_COLOR = Color.PINK;
 	private int value; // gia tri cua box
-	private boolean fixedValue = false; // gia tri cua o co co dinh hay khong
-	private boolean err = false;
+	private boolean fixedValue; // gia tri cua o co co dinh hay khong
+	private boolean err;
 	private int row, col; // hang va cot trong ma tran
-	private boolean selected = false; // kiem tra xem o co duoc chon hay khong
+	private boolean selected; // kiem tra xem o co duoc chon hay khong
 
 	/**
 	 * Ham khoi tao BoxLabel
@@ -42,13 +42,23 @@ public class BoxLabel extends JLabel implements MouseListener {
 		// TODO Auto-generated constructor stub
 		this.row = row;
 		this.col = col;
-		value = -1; // mac dinh bang -1
+		reset();
 		setOpaque(true);
-		this.setOriColor();
+		setOriColor();
 		setPreferredSize(new Dimension(Constant.BOX_SIZE, Constant.BOX_SIZE));
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setFont(new java.awt.Font("Segoe UI", Font.BOLD, 22));
 		addMouseListener(this);
+	}
+	
+	public void reset() {
+		value = -1; // mac dinh bang -1
+		fixedValue = false;
+		err = false;
+		selected = false;
+		setValue(-1);
+		setOriColor();
+		setFixedValue(false);
 	}
 	
 	private void setOriColor() {
@@ -113,15 +123,14 @@ public class BoxLabel extends JLabel implements MouseListener {
 		}
 		
 	}
-	
-	/**
-	 * @param fixedValue the fixedValue to set
-	 */
-	public void setFixedValue(int value) {
-		this.value = value;
-		this.setText("" + value);
-		this.fixedValue = true;
-		this.setForeground(Color.RED);
+
+	public void setFixedValue(boolean fixed) {
+		this.fixedValue = fixed;
+		if (fixed) {
+			this.setForeground(Color.RED);
+		} else {
+			this.setForeground(Color.BLACK);
+		}
 	}
 	
 	/**
