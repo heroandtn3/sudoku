@@ -39,7 +39,6 @@ public class MenuPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private GamePanel gamePanel;
-	private Solver solver = new SolverBacktracking();
 	private JButton butSolve;
 	private JButton butGen;
 	private JButton butReset;
@@ -80,10 +79,10 @@ public class MenuPanel extends JPanel {
 					butSolve.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
 							// solve the sudoku grid
-							Grid grid = solver.solve(gamePanel.getGame().getGrid());
-							if (grid != null) {
+							if (gamePanel.getGame().solve() == true) {
+								// successful solving
 								gamePanel.resetView();
-								gamePanel.drawBoxValue(grid, false);
+								gamePanel.drawBoxValue(false);
 								gamePanel.validate();
 							}
 							gamePanel.requestFocusInWindow();

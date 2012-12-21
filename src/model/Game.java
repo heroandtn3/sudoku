@@ -3,6 +3,9 @@
  */
 package model;
 
+import control.Solver;
+import control.SolverBacktracking;
+
 /**
  * @author heroandtn3
  *
@@ -26,7 +29,9 @@ public class Game {
 			{0, 0, 0, 3, 0, 4, 0, 0, 0},
 			{0, 0, 1, 0, 0, 0, 0, 0, 9}
 	};
-	private Grid grid = new Grid(matrixTest);
+	private final Grid gridOri = new Grid(matrixTest);
+	private Grid gridSolving;
+	private Solver solver = new SolverBacktracking();
 	/**
 	 * 
 	 */
@@ -39,6 +44,22 @@ public class Game {
 		colSelected = -1; // dang duoc chon
 		error = false;
 		savedErrorType = 0;
+		gridSolving = new Grid(matrixTest);
+	}
+	
+	/**
+	 * 
+	 * @return: true if successful solving, or false if
+	 * unsuccessful solving
+	 */
+	public boolean solve() {
+		Grid result = solver.solve(gridOri);
+		if (result != null) {
+			gridSolving = result;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public int getRowSelected() {
@@ -73,16 +94,20 @@ public class Game {
 		this.savedErrorType = savedErrorType;
 	}
 
-	public Grid getGrid() {
-		return grid;
+	public Grid getGridSolving() {
+		return gridSolving;
 	}
 
-	public void setGrid(Grid grid) {
-		this.grid = grid;
+	public void setGridSolving(Grid grid) {
+		this.gridSolving = grid;
 	}
 
 	public int[][] getMatrixTest() {
 		return matrixTest;
+	}
+
+	public Grid getGridOri() {
+		return gridOri;
 	}
 
 }

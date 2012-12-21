@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements KeyListener {
 				boxs[i][j].reset();
 			}
 		}
-		drawBoxValue(true);
+		drawBoxValue(game.getGridOri(), true);
 	}
 	
 	public void drawBoxValue(Grid grid, boolean fixed) {
@@ -95,7 +95,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 	
 	public void drawBoxValue(boolean fixed) {
-		drawBoxValue(game.getGrid(), fixed);
+		drawBoxValue(game.getGridSolving(), fixed);
 	}
 	
 	
