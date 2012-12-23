@@ -107,6 +107,11 @@ public class GamePanel extends JPanel implements KeyListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
 			if (game.isError() == true) {
 				System.out
 						.println("Ban phai sua loi da roi moi duoc dien tiep");
@@ -114,12 +119,6 @@ public class GamePanel extends JPanel implements KeyListener {
 				BoxLabel source = (BoxLabel) e.getSource();
 				selectBox(source);
 			}
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
