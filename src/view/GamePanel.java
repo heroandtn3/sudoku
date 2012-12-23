@@ -37,8 +37,8 @@ public class GamePanel extends JPanel implements KeyListener {
 	 */
 	public GamePanel() {
 		// TODO Auto-generated constructor stub
-		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, 
-				Constant.BOX_PADDING, Constant.BOX_PADDING));
+		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, Constant.BOX_PADDING,
+				Constant.BOX_PADDING));
 		initGUI();
 		resetView();
 		setBackground(Color.GRAY);
@@ -54,13 +54,16 @@ public class GamePanel extends JPanel implements KeyListener {
 				BoxLabel box = new BoxLabel(i, j);
 				// ve cac duong ngang
 				if (i == 3 || i == 6)
-					box.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+					box.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
+							Color.GRAY));
 				// ve cac duong doc
 				if (j == 3 || j == 6) {
-					box.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
+					box.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0,
+							Color.GRAY));
 					if (i == 3 || i == 6) {
 						// fix lai cac diem giao nhau
-						box.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.GRAY));
+						box.setBorder(BorderFactory.createMatteBorder(1, 1, 0,
+								0, Color.GRAY));
 					}
 				}
 				box.addMouseListener(boxClickEvent);
@@ -69,7 +72,7 @@ public class GamePanel extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
+
 	public void resetView() {
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
@@ -78,9 +81,10 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		drawBoxValue(game.getGridOri(), true);
 	}
-	
+
 	public void drawBoxValue(Grid grid, boolean fixed) {
-		if (grid == null) return; // kiem tra tinh hop le cua grid
+		if (grid == null)
+			return; // kiem tra tinh hop le cua grid
 		int[][] mt = grid.toMatrix();
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
@@ -93,27 +97,20 @@ public class GamePanel extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
+
 	public void drawBoxValue(boolean fixed) {
 		drawBoxValue(game.getGridSolving(), fixed);
 	}
-	
-	
+
 	private MouseListener boxClickEvent = new MouseListener() {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (game.isError() == true) {
-				System.out.println("Ban phai sua loi da roi moi duoc dien tiep");
+				System.out
+						.println("Ban phai sua loi da roi moi duoc dien tiep");
 			} else {
-				// deselect box da chon
-				if (game.getRowSelected() != -1) { 
-					// kiem tra xem da co o nao chon chua
-					// neu co thi deselect no de chon cai khac
-					boxs[game.getRowSelected()][game.getColSelected()].deselect();
-				}
-				
 				BoxLabel source = (BoxLabel) e.getSource();
 				selectBox(source);
 			}
@@ -122,25 +119,25 @@ public class GamePanel extends JPanel implements KeyListener {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 	};
@@ -148,18 +145,19 @@ public class GamePanel extends JPanel implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_UP:
+			case KeyEvent.VK_UP :
 				if (game.getRowSelected() != -1) {
 					// da co box duoc chon truoc do
 					int tmp = game.getRowSelected() - 1;
-					if (tmp < 0) tmp = 8;
+					if (tmp < 0)
+						tmp = 8;
 					selectBox(boxs[tmp][game.getColSelected()]);
 				} else {
 					// chua co box nao duoc chon
@@ -167,11 +165,12 @@ public class GamePanel extends JPanel implements KeyListener {
 					selectBox(boxs[8][0]);
 				}
 				break;
-			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_RIGHT :
 				if (game.getRowSelected() != -1) {
 					// da co box duoc chon truoc do
 					int tmp = game.getColSelected() + 1;
-					if (tmp > 8) tmp = 0;
+					if (tmp > 8)
+						tmp = 0;
 					selectBox(boxs[game.getRowSelected()][tmp]);
 				} else {
 					// chua co box nao duoc chon
@@ -179,11 +178,12 @@ public class GamePanel extends JPanel implements KeyListener {
 					selectBox(boxs[0][0]);
 				}
 				break;
-			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_DOWN :
 				if (game.getRowSelected() != -1) {
 					// da co box duoc chon truoc do
 					int tmp = game.getRowSelected() + 1;
-					if (tmp > 8) tmp = 0;
+					if (tmp > 8)
+						tmp = 0;
 					selectBox(boxs[tmp][game.getColSelected()]);
 				} else {
 					// chua co box nao duoc chon
@@ -191,11 +191,12 @@ public class GamePanel extends JPanel implements KeyListener {
 					selectBox(boxs[0][0]);
 				}
 				break;
-			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_LEFT :
 				if (game.getRowSelected() != -1) {
 					// da co box duoc chon truoc do
 					int tmp = game.getColSelected() - 1;
-					if (tmp < 0) tmp = 8;
+					if (tmp < 0)
+						tmp = 8;
 					selectBox(boxs[game.getRowSelected()][tmp]);
 				} else {
 					// chua co box nao duoc chon
@@ -203,28 +204,37 @@ public class GamePanel extends JPanel implements KeyListener {
 					selectBox(boxs[8][8]);
 				}
 				break;
-			default:
-			{
+			default : {
 				if (game.getRowSelected() != -1) { // neu da co o chon
-					if (e.getKeyCode() == KeyEvent.VK_DELETE ||
-						e.getKeyCode() == KeyEvent.VK_SPACE) {
-						boxs[game.getRowSelected()][game.getColSelected()].setValue(-1);
+					if (e.getKeyCode() == KeyEvent.VK_DELETE
+							|| e.getKeyCode() == KeyEvent.VK_SPACE) {
+						boxs[game.getRowSelected()][game.getColSelected()]
+								.setValue(-1);
 						if (game.isError()) {
-							hightLightError(game.getRowSelected(), game.getColSelected(), game.getSavedErrorType(), false);
+							hightLightError(game.getRowSelected(),
+									game.getColSelected(),
+									game.getSavedErrorType(), false);
 							game.setError(false);
 						}
 					} else {
 						Character c = e.getKeyChar();
-						if (c >= '1' && c <= '9') { // khong che gia tri trong khoang tu 1 den 9
+						if (c >= '1' && c <= '9') { // khong che gia tri trong
+													// khoang tu 1 den 9
 							if (game.isError()) {
-								hightLightError(game.getRowSelected(), game.getColSelected(), game.getSavedErrorType(), false);
+								hightLightError(game.getRowSelected(),
+										game.getColSelected(),
+										game.getSavedErrorType(), false);
 								game.setError(false);
 							}
-							boxs[game.getRowSelected()][game.getColSelected()].setValue(Integer.parseInt(c.toString()));
+							boxs[game.getRowSelected()][game.getColSelected()]
+									.setValue(Integer.parseInt(c.toString()));
 							Checker checker = new Checker();
-							int errorType = checker.getErrorType(boxs, game.getRowSelected(), game.getColSelected());
+							int errorType = checker.getErrorType(boxs,
+									game.getRowSelected(),
+									game.getColSelected());
 							if (errorType != 0) {
-								hightLightError(game.getRowSelected(), game.getColSelected(), errorType, true);
+								hightLightError(game.getRowSelected(),
+										game.getColSelected(), errorType, true);
 								game.setError(true);
 								game.setSavedErrorType(errorType);
 							} else {
@@ -235,35 +245,36 @@ public class GamePanel extends JPanel implements KeyListener {
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param box
 	 */
 	private void selectBox(BoxLabel box) {
 		// deselect box da chon
-		if (game.getRowSelected() != -1) { 
+		if (game.getRowSelected() != -1) {
 			// kiem tra xem da co o nao chon chua
 			// neu co thi deselect no de chon cai khac
 			boxs[game.getRowSelected()][game.getColSelected()].deselect();
 		}
-		
+
 		box.select(); // chon box moi
 		// luu lai vet
 		game.setRowSelected(box.getRow());
 		game.setColSelected(box.getCol());
 	}
-	
+
 	/**
 	 * Hilight error boxs
+	 * 
 	 * @param row
 	 * @param col
 	 * @param type
@@ -278,14 +289,14 @@ public class GamePanel extends JPanel implements KeyListener {
 				boxs[row][i].setError(status);
 			}
 		}
-		
+
 		if ((type & 2) == 2) {
 			// col error
 			for (int i = 0; i < nrow; i++) {
 				boxs[i][col].setError(status);
 			}
 		}
-		
+
 		if ((type & 4) == 4) {
 			// 3x3 error
 			int startRow = row - row % 3;
@@ -305,6 +316,5 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
 
 }
