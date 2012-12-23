@@ -4,37 +4,37 @@
 package model;
 
 import control.Generator;
-import control.GeneratorAlgorithm;
+import control.GeneratorStraighForward;
 import control.Solver;
 import control.SolverBacktracking;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class Game {
-	
+
 	private int rowSelected; // hang va cot
 	private int colSelected; // dang duoc chon
 	private boolean error;
 	private int savedErrorType;
-	
+
 	private Grid gridOri;
 	private Grid gridSolving;
 	private Solver solver = new SolverBacktracking();
-	private Generator generator = new GeneratorAlgorithm();
+	private Generator generator = new GeneratorStraighForward();
 	/**
 	 * 
 	 */
 	public Game() {
 		initGame();
 	}
-	
+
 	public Game(int level) {
 		generate(level);
 		initGame();
 	}
-	
+
 	public void initGame() {
 		rowSelected = -1; // hang va cot
 		colSelected = -1; // dang duoc chon
@@ -44,15 +44,14 @@ public class Game {
 			gridSolving = new Grid(gridOri.toMatrix());
 		}
 	}
-	
+
 	public void generate(int level) {
 		gridOri = generator.generate(level);
 	}
-	
+
 	/**
 	 * 
-	 * @return: true if successful solving, or false if
-	 * unsuccessful solving
+	 * @return: true if successful solving, or false if unsuccessful solving
 	 */
 	public boolean solve() {
 		Grid result = solver.solve(gridOri);
