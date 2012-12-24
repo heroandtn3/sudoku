@@ -18,7 +18,7 @@ public class GeneratorStraighForward implements Generator {
 	}
 
 	private Grid makeGrid() {
-		Grid answer = solve(new Grid(), true).get(0);
+		Grid answer = solve(new Grid(), 1).get(0);
 
 		int[][] answerMatrix = answer.toMatrix();
 		int[] takeAway = initRandom(SIZE * SIZE);
@@ -30,7 +30,7 @@ public class GeneratorStraighForward implements Generator {
 
 			answerMatrix[row][col] = 0;
 
-			int resultCount = solve(new Grid(answerMatrix), false).size();
+			int resultCount = solve(new Grid(answerMatrix), 2).size();
 			if (resultCount != 1) {
 				answerMatrix[row][col] = temp;
 			}
@@ -39,11 +39,11 @@ public class GeneratorStraighForward implements Generator {
 
 		return new Grid(answerMatrix);
 	}
-	public ArrayList<Grid> solve(final Grid grid, boolean isNeedOne) {
+	public ArrayList<Grid> solve(final Grid grid, int needCount) {
 		matrix = grid.toMatrix();
 		lastK = getLastK();
 		results = new ArrayList<Grid>();
-		trySearch(0, isNeedOne);
+		trySearch(0, needCount);
 		if (results.size() > 0) {
 			return (results);
 
@@ -52,7 +52,7 @@ public class GeneratorStraighForward implements Generator {
 			return null;
 		}
 	}
-	private void trySearch(int k, boolean isNeedOne) {
+	private void trySearch(int k, int needCount) {
 		// loai bo cac o de bai
 		while (matrix[k / SIZE][k % SIZE] != 0) {
 			k++;
@@ -74,10 +74,10 @@ public class GeneratorStraighForward implements Generator {
 					}
 					results.add(new Grid(rs)); // them vao list
 				} else {
-					if (isNeedOne && (results.size() != 0))
+					if (needCount != 0 && (results.size() == needCount))
 						break;
 					else
-						trySearch(k + 1, isNeedOne);
+						trySearch(k + 1, needCount);
 				}
 				matrix[row][col] = 0;
 			}
