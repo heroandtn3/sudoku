@@ -18,12 +18,30 @@ public class GeneratorStraighForward implements Generator {
 	}
 
 	private Grid makeGrid() {
-		return solve(new Grid(), true).get(0);
-	}
+		Grid answer = solve(new Grid(), true).get(0);
 
+		int[][] answerMatrix = answer.toMatrix();
+		int[] takeAway = initRandom(SIZE * SIZE);
+
+		for (int k : takeAway) {
+			k--;
+			int row = k / SIZE, col = k % SIZE;
+			int temp = answerMatrix[row][col];
+
+			answerMatrix[row][col] = 0;
+
+			int resultCount = solve(new Grid(answerMatrix), false).size();
+			if (resultCount != 1) {
+				answerMatrix[row][col] = temp;
+			}
+
+		}
+
+		return new Grid(answerMatrix);
+	}
 	public ArrayList<Grid> solve(final Grid grid, boolean isNeedOne) {
 		matrix = grid.toMatrix();
-		lastK = SIZE * SIZE - 1;
+		lastK = getLastK();
 		results = new ArrayList<Grid>();
 		trySearch(0, isNeedOne);
 		if (results.size() > 0) {
@@ -99,6 +117,17 @@ public class GeneratorStraighForward implements Generator {
 			}
 		}
 		return true;
+	}
+
+	private int getLastK() {
+		for (int row = SIZE - 1; row >= 0; row--) {
+			for (int col = SIZE - 1; col >= 0; col--) {
+				if (matrix[row][col] == 0) {
+					return (row * SIZE + col);
+				}
+			}
+		}
+		return 0;
 	}
 
 }
