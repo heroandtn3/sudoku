@@ -54,9 +54,13 @@ public class GeneratorStraighForward implements Generator {
 	}
 	private void trySearch(int k, int needCount) {
 		// loai bo cac o de bai
-		while (matrix[k / SIZE][k % SIZE] != 0) {
+		while (k < SIZE * SIZE && matrix[k / SIZE][k % SIZE] != 0) {
 			k++;
 		}
+
+		if (k == SIZE * SIZE)
+			return;
+
 		int row = k / SIZE, col = k % SIZE;
 
 		int[] random = initRandom(SIZE);

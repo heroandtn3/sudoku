@@ -47,11 +47,11 @@ public class SolverBacktracking implements Solver {
 
 	private void trySearch(int k) {
 		// loai bo cac o de bai
-		while (k < SIZE && matrix[k / SIZE][k % SIZE] != 0) {
+		while (k < SIZE * SIZE && matrix[k / SIZE][k % SIZE] != 0) {
 			k++;
 		}
 
-		if (k == SIZE)
+		if (k == SIZE * SIZE)
 			return;
 
 		int row = k / SIZE, col = k % SIZE;
