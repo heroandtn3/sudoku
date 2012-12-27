@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public MainFrame() {
-		setTitle("Sudoku");
+		setTitle("bSudoku");
 		Container cp = getContentPane();
 		cp.setLayout(new BorderLayout());
 		
