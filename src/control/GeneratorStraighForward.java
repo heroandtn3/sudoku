@@ -34,7 +34,7 @@ public class GeneratorStraighForward implements Generator {
 	private Grid makeGrid() {
 		Grid answer = solve(new Grid(), 1).get(0);
 
-		int[][] answerMatrix = answer.toMatrix();
+		int[][] answerMatrix = answer.getMatrix();
 		int[] takeAway = initRandom(SIZE * SIZE);
 
 		for (int k : takeAway) {
@@ -54,7 +54,7 @@ public class GeneratorStraighForward implements Generator {
 		return new Grid(answerMatrix);
 	}
 	public ArrayList<Grid> solve(final Grid grid, int needCount) {
-		matrix = grid.toMatrix();
+		matrix = grid.getMatrix();
 		lastK = getLastK();
 		results = new ArrayList<Grid>();
 		trySearch(0, needCount);

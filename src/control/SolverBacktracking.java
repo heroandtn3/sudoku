@@ -46,7 +46,7 @@ public class SolverBacktracking implements Solver {
 	 */
 	@Override
 	public Grid solve(final Grid grid) {
-		matrix = grid.toMatrix();
+		matrix = grid.getMatrix();
 		lastK = getLastK();
 		results = new ArrayList<int[][]>();
 		trySearch(0);

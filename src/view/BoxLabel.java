@@ -66,11 +66,10 @@ public class BoxLabel extends JLabel implements MouseListener {
 	}
 	
 	public void reset() {
-		value = -1; // mac dinh bang -1
+		setValue(0); // mac dinh bang 0
 		fixedValue = false;
 		err = false;
 		selected = false;
-		setValue(-1);
 		setOriColor();
 		setFixedValue(false);
 	}
@@ -125,11 +124,12 @@ public class BoxLabel extends JLabel implements MouseListener {
 	/**
 	 * Set gia tri cho box
 	 * @param value: gia tri so, nam trong khoang tu 1 den 9
+	 * - neu la 0 thi tuc la xoa o
 	 */
 	public void setValue(int value) {
 		if (fixedValue == false) {
 			this.value = value;
-			if (value == -1) {
+			if (value == 0) {
 				this.setText("");
 			} else {
 				this.setText("" + value);

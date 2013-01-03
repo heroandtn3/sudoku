@@ -45,14 +45,16 @@ public class GamePanel extends JPanel implements KeyListener {
 	private final int SDK_SIZE = Constant.SIZE;
 	private BoxLabel[][] boxs;
 	private Game game = new Game();
+	private int savedErrorType = 0;
 
 	/**
 	 * 
 	 */
 	public GamePanel() {
 		// TODO Auto-generated constructor stub
-		setLayout(new GridLayout(SDK_SIZE, SDK_SIZE, Constant.BOX_PADDING,
-				Constant.BOX_PADDING));
+		setLayout(new GridLayout(
+				SDK_SIZE, SDK_SIZE, 
+				Constant.BOX_PADDING, Constant.BOX_PADDING));
 		initGUI();
 		resetView();
 		setBackground(Color.GRAY);
@@ -68,16 +70,16 @@ public class GamePanel extends JPanel implements KeyListener {
 				BoxLabel box = new BoxLabel(i, j);
 				// ve cac duong ngang
 				if (i == 3 || i == 6)
-					box.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
-							Color.GRAY));
+					box.setBorder(BorderFactory.createMatteBorder(
+							1, 0, 0, 0, Color.GRAY));
 				// ve cac duong doc
 				if (j == 3 || j == 6) {
-					box.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0,
-							Color.GRAY));
+					box.setBorder(BorderFactory.createMatteBorder(
+							0, 1, 0, 0, Color.GRAY));
 					if (i == 3 || i == 6) {
 						// fix lai cac diem giao nhau
-						box.setBorder(BorderFactory.createMatteBorder(1, 1, 0,
-								0, Color.GRAY));
+						box.setBorder(BorderFactory.createMatteBorder(
+								1, 1, 0, 0, Color.GRAY));
 					}
 				}
 				box.addMouseListener(boxClickEvent);
@@ -99,7 +101,7 @@ public class GamePanel extends JPanel implements KeyListener {
 	public void drawBoxValue(Grid grid, boolean fixed) {
 		if (grid == null)
 			return; // kiem tra tinh hop le cua grid
-		int[][] mt = grid.toMatrix();
+		int[][] mt = grid.getMatrix();
 		for (int i = 0; i < SDK_SIZE; i++) {
 			for (int j = 0; j < SDK_SIZE; j++) {
 				if (mt[i][j] != 0) {
@@ -219,39 +221,53 @@ public class GamePanel extends JPanel implements KeyListener {
 				break;
 			default : {
 				if (game.getRowSelected() != -1) { // neu da co o chon
-					if (e.getKeyCode() == KeyEvent.VK_DELETE
-							|| e.getKeyCode() == KeyEvent.VK_SPACE) {
-						boxs[game.getRowSelected()][game.getColSelected()]
-								.setValue(-1);
-						if (game.isError()) {
-							hightLightError(game.getRowSelected(),
+					if (e.getKeyCode() == KeyEvent.VK_DELETE ||
+						e.getKeyCode() == KeyEvent.VK_SPACE) {
+						// xoa o dang chon
+						
+						if (game.fillBoxByValue(0)) { // xoa box
+							// neu xoa thanh cong
+							
+							// bo highlight nhung o bi loi
+							hightLightError(
+									game.getRowSelected(),
 									game.getColSelected(),
-									game.getSavedErrorType(), false);
-							game.setError(false);
+									savedErrorType, 
+									false);
+							
+							// xoa box phan GUI
+							boxs[game.getRowSelected()]
+								[game.getColSelected()].setValue(0);
 						}
+						
+						
 					} else {
 						Character c = e.getKeyChar();
 						if (c >= '1' && c <= '9') { // khong che gia tri trong
 													// khoang tu 1 den 9
-							if (game.isError()) {
-								hightLightError(game.getRowSelected(),
+
+							int value = Integer.parseInt(c.toString());
+							if (game.fillBoxByValue(value)) { // dien gia tri
+								// neu dien thanh cong
+								
+								// bo highlight loi
+								hightLightError(
+										game.getRowSelected(),
 										game.getColSelected(),
-										game.getSavedErrorType(), false);
-								game.setError(false);
-							}
-							boxs[game.getRowSelected()][game.getColSelected()]
-									.setValue(Integer.parseInt(c.toString()));
-							Checker checker = new Checker();
-							int errorType = checker.getErrorType(boxs,
-									game.getRowSelected(),
-									game.getColSelected());
-							if (errorType != 0) {
-								hightLightError(game.getRowSelected(),
-										game.getColSelected(), errorType, true);
-								game.setError(true);
-								game.setSavedErrorType(errorType);
-							} else {
-								game.setError(false);
+										savedErrorType, 
+										false);
+								
+								// dien gia tri phan GUI
+								boxs[game.getRowSelected()]
+									[game.getColSelected()].setValue(value);
+								
+								// hilight loi (neu co)
+								savedErrorType = game.getErrorType();
+								hightLightError(
+										game.getRowSelected(),
+										game.getColSelected(),
+										savedErrorType, 
+										true);
 							}
 						}
 					}

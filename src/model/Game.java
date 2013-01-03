@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package model;
 
+import control.Checker;
 import control.Generator;
 import control.GeneratorStraighForward;
 import control.Solver;
@@ -30,13 +31,23 @@ public class Game {
 
 	private int rowSelected; // hang va cot
 	private int colSelected; // dang duoc chon
-	private boolean error;
-	private int savedErrorType;
+	private boolean error; // co dang trong tinh trang loi hay khong
+	
+	/**
+	 * neu loi thi kieu loi duoc luu lai
+	 * la 1 so nguyen 3 bit:
+	 * - bit thu 0 neu hang dang chon gay loi
+	 * - bit thu 1 neu cot dang chon gay loi
+	 * - bit thu 2 neu o 3x3 chua o dang chon gay loi
+	 */
+	private int errorType;
 
 	private Grid gridOri;
 	private Grid gridSolving;
+	private Checker checker = new Checker();
 	private Solver solver = new SolverBacktracking();
 	private Generator generator = new GeneratorStraighForward();
+	
 	/**
 	 * 
 	 */
@@ -53,9 +64,9 @@ public class Game {
 		rowSelected = -1; // hang va cot
 		colSelected = -1; // dang duoc chon
 		error = false;
-		savedErrorType = 0;
+		errorType = 0;
 		if (gridOri != null) {
-			gridSolving = new Grid(gridOri.toMatrix());
+			gridSolving = new Grid(gridOri.getMatrix());
 		}
 	}
 
@@ -75,6 +86,51 @@ public class Game {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean fillBoxByValue(int value) {
+		if (gridOri.getMatrix()[rowSelected][colSelected] != 0) { 
+			// khong cho sua o de bai
+			return false;
+		}
+		
+		if (0 <= value && value <= 9) { // kiem tra gia tri hop le
+			gridSolving.getMatrix()[rowSelected][colSelected] = value;
+			
+			// kiem tra loi
+			errorType = checker.getErrorType(
+					gridSolving, 
+					rowSelected, 
+					colSelected);
+			
+			if (errorType != 0) { // neu co loi
+				setError(true);			// thi danh dau la co loi
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean fillBoxByValue(int row, int col, int value) {
+		if (row < 0 || row > 8 || col < 0 || col > 8) {
+			return false;
+		}
+		
+		if (gridOri.getMatrix()[row][col] != 0) { // khong cho sua o de bai
+			return false;
+		}
+		
+		if (0 <= value && value <= 9) { // kiem tra gia tri hop le
+			gridSolving.getMatrix()[row][col] = value;
+			
+			// kiem tra loi
+			errorType = checker.getErrorType(gridSolving, row, col);
+			if (errorType != 0) { // neu co loi
+				setError(true);			// thi danh dau la co loi
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public int getRowSelected() {
@@ -101,14 +157,6 @@ public class Game {
 		this.error = error;
 	}
 
-	public int getSavedErrorType() {
-		return savedErrorType;
-	}
-
-	public void setSavedErrorType(int savedErrorType) {
-		this.savedErrorType = savedErrorType;
-	}
-
 	public Grid getGridSolving() {
 		return gridSolving;
 	}
@@ -119,6 +167,14 @@ public class Game {
 
 	public Grid getGridOri() {
 		return gridOri;
+	}
+
+	public int getErrorType() {
+		return errorType;
+	}
+
+	public void setErrorType(int errorType) {
+		this.errorType = errorType;
 	}
 
 }
