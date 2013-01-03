@@ -99,17 +99,19 @@ public class Game {
 		if (0 <= value && value <= 9) { // kiem tra gia tri hop le
 			gridSolving.getMatrix()[rowSelected][colSelected] = value;
 			
-			// kiem tra loi
-			errorType = checker.getErrorType(
-					gridSolving, 
-					rowSelected, 
-					colSelected);
-			System.out.println("Loai loi: " + errorType);
-			if (errorType != 0) { // neu co loi
-				setError(true);			// thi danh dau la co loi
-			} else { // neu khong co loi
-				setError(false); // danh dau la khong loi
+			if (value == 0) { // neu la xoa o
+				// thi loai bo loi
+				errorType = 0;
+				setError(false);
+			} else {
+				// kiem tra loi
+				errorType = checker.getErrorType(
+						gridSolving, 
+						rowSelected, 
+						colSelected);
+				setError(errorType != 0); // danh dau (loi neu co)
 			}
+			
 			return true;
 		}
 		return false;
