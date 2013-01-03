@@ -41,7 +41,7 @@ public class Game {
 	 * - bit thu 2 neu o 3x3 chua o dang chon gay loi
 	 */
 	private int errorType;
-
+	private int level = 0;
 	private Grid gridOri;
 	private Grid gridSolving;
 	private Checker checker = new Checker();
@@ -56,7 +56,8 @@ public class Game {
 	}
 
 	public Game(int level) {
-		generate(level);
+		this.level = level;
+		newPuzzle();
 		initGame();
 	}
 
@@ -65,12 +66,13 @@ public class Game {
 		colSelected = -1; // dang duoc chon
 		error = false;
 		errorType = 0;
-		if (gridOri != null) {
-			gridSolving = new Grid(gridOri.getMatrix());
+		if (gridOri == null) {
+			gridOri = new Grid();
 		}
+		gridSolving = new Grid(gridOri.getMatrix());
 	}
 
-	public void generate(int level) {
+	public void newPuzzle() {
 		gridOri = generator.generate(level);
 	}
 
@@ -102,9 +104,11 @@ public class Game {
 					gridSolving, 
 					rowSelected, 
 					colSelected);
-			
+			System.out.println("Loai loi: " + errorType);
 			if (errorType != 0) { // neu co loi
 				setError(true);			// thi danh dau la co loi
+			} else { // neu khong co loi
+				setError(false); // danh dau la khong loi
 			}
 			return true;
 		}
@@ -175,6 +179,14 @@ public class Game {
 
 	public void setErrorType(int errorType) {
 		this.errorType = errorType;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }
