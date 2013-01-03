@@ -114,6 +114,7 @@ public class MenuPanel extends JPanel {
 					butReset.setBounds(245, 12, 80, 30);
 					butReset.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
+							gamePanel.getGame().initGame();
 							gamePanel.resetView();
 							gamePanel.requestFocusInWindow();
 						}
