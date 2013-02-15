@@ -81,8 +81,6 @@ public class MenuPanel extends JPanel {
 						public void actionPerformed(ActionEvent evt) {
 							gamePanel.getGame().newPuzzle();
 							gamePanel.getGame().initGame();
-							gamePanel.resetView();
-							gamePanel.requestFocusInWindow();
 						}
 					});
 				}

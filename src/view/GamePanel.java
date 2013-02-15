@@ -23,6 +23,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -30,7 +32,6 @@ import javax.swing.JPanel;
 import model.Constant;
 import model.Game;
 import model.Grid;
-import control.Checker;
 
 /**
  * @author heroandtn3
@@ -55,6 +56,15 @@ public class GamePanel extends JPanel implements KeyListener {
 		setLayout(new GridLayout(
 				SDK_SIZE, SDK_SIZE, 
 				Constant.BOX_PADDING, Constant.BOX_PADDING));
+		
+		game.addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				System.out.println("Being notified...");
+				resetView();
+				requestFocusInWindow();
+			}
+		});
 		initGUI();
 		resetView();
 		setBackground(Color.GRAY);

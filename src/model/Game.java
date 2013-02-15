@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package model;
 
+import java.util.Observable;
+
 import control.Checker;
 import control.Generator;
 import control.GeneratorStraighForward;
@@ -27,7 +29,7 @@ import control.SolverBacktracking;
  * @author heroandtn3
  * 
  */
-public class Game {
+public class Game extends Observable {
 
 	private int rowSelected; // hang va cot
 	private int colSelected; // dang duoc chon
@@ -70,6 +72,8 @@ public class Game {
 			gridOri = new Grid();
 		}
 		gridSolving = new Grid(gridOri.getMatrix());
+		setChanged();
+		notifyObservers();
 	}
 
 	public void newPuzzle() {
