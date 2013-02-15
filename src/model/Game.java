@@ -49,18 +49,21 @@ public class Game extends Observable {
 	private Checker checker = new Checker();
 	private Solver solver = new SolverBacktracking();
 	private Generator generator = new GeneratorStraighForward();
+	private Thread genThread = new Thread(new GenerateRun());
 	
 	/**
 	 * 
 	 */
 	public Game() {
 		initGame();
+		genThread.start();
 	}
 
 	public Game(int level) {
 		this.level = level;
 		newPuzzle();
 		initGame();
+		genThread.start();
 	}
 
 	public void initGame() {
@@ -72,12 +75,18 @@ public class Game extends Observable {
 			gridOri = new Grid();
 		}
 		gridSolving = new Grid(gridOri.getMatrix());
+
+		// mark that changed then notify all observer to update
 		setChanged();
 		notifyObservers();
 	}
 
 	public void newPuzzle() {
-		gridOri = generator.generate(level);
+		synchronized (gridOri) {
+			System.out.println("Before Resuming...");
+			gridOri.notifyAll();
+			System.out.println("After Resuming...");
+		}
 	}
 
 	/**
@@ -193,6 +202,28 @@ public class Game extends Observable {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	
+	class GenerateRun implements Runnable {
+		public volatile boolean stopped = false;
+		@Override
+		public void run() {
+			
+			while (!stopped) {
+				synchronized (gridOri) {
+					try {
+						System.out.println("Waiting...");
+						gridOri.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("Running...");
+					gridOri = generator.generate(level);
+					System.out.println("Finish!");
+				}
+			}
+		}
 	}
 
 }
