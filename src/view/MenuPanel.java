@@ -80,7 +80,6 @@ public class MenuPanel extends JPanel {
 					butGen.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
 							gamePanel.getGame().newPuzzle();
-							gamePanel.getGame().initGame();
 						}
 					});
 				}

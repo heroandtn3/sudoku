@@ -220,6 +220,7 @@ public class Game extends Observable {
 					}
 					System.out.println("Running...");
 					gridOri = generator.generate(level);
+					initGame();
 					System.out.println("Finish!");
 				}
 			}
